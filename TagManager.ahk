@@ -101,7 +101,7 @@ ButtonGSDR: ;GSDR MENU FOR CLOSING SIMPLE TAGS
 ButtonGetMousePos: ;GETS MOUSE POSITION (disabled on main gui)
 
 	CoordMode, Mouse, Screen ;Sets Mouse to absolute screen coordinates
-	Sleep, 5000
+	Sleep, 3000
 	MouseGetPos, xpos, ypos ;gets mouse coords
 	MsgBox, The cursor is at X%xpos% Y%ypos%. ;outputs mouse coords
 	Return
@@ -262,12 +262,12 @@ Action_Selector: ;This will call the appropriate subs whether the user wants to 
 		GoSub, Create_Function
 		
 		Sleep, 10000
-		MouseClick, Left, 1208, 142, , 25 ;This will copy the WO
+		MouseClick, Left, 1047, 157, , 25 ;This will copy the WO
 		Sleep, 20
-		MouseClick, Left, 1208, 140, , 25 ;This will copy the WO
+		MouseClick, Left, 1047, 157, , 25 ;This will copy the WO
 		Sleep, 20
-		MouseClick, Left, 1208, 139, , 25 ;This will copy the WO
-		MouseClick, Left, 144, 69, , 75 ;clicks on the search box
+		MouseClick, Left, 1047, 157, , 25 ;This will copy the WO
+		MouseClick, Left, 152, 90, , 75 ;clicks on the search box
 		SendInput ^v ;pastes the copied SO
 		SendInput {Enter}
 		Sleep, 10000
@@ -279,59 +279,60 @@ Action_Selector: ;This will call the appropriate subs whether the user wants to 
 		Return
 	
 Create_Function: ;THIS FUNCTION WILL CREATE A NEW TAG
-	MouseClick, Left, 1850, 992, , 25 ;Select
+	MouseClick, Left, 1522, 814, , 25 ;Select
 	Sleep, 6000
-	MouseClick, Left, 527, 453, , 25 ;this will click in the text box to get us ready to type
+	MouseClick, Left, 359, 381, , 25 ;this will click in the text box to get us ready to type
 	Send, . Device works as expected. -%init% ;this is our text in the text box
 	Sleep, 50
-	MouseClick, Left, 588, 237, , 25 ;this will set the tag instore
-	MouseClick, Left, 1887, 237, , 25 ;This will select the ddl
+	MouseClick, Left, 491, 259, , 25 ;this will set the tag instore
+	MouseClick, Left, 1549, 257, , 25 ;This will select the ddl
 	Sleep, 500
-	MouseClick, Left, 1422, 349, , 25 ;This will select New product
+	MouseClick, Left, 1186, 373, , 25 ;This will select New product
 	Sleep, 500
-	MouseClick, Left, 1885, 617, , 25 ;This will select the ddl
+	MouseClick, Left, 1551, 541, , 25 ;This will select the ddl
 	Sleep, 500
-	MouseClick, Left, 1422, 667, , 25 ;This will select all
+	MouseClick, Left, 1188, 592, , 25 ;This will select all
 	;MsgBox, Please check these fields.
 	Sleep, 200
-	MouseClick, Left, 1864, 993, , 25 ;This will hit submits
-	MouseClick, Left, 1864, 993, , 25 ;This will hit submits
+	MouseClick, Left, 1529, 816, , 25 ;This will hit submits
+	;MouseClick, Left, 1864, 993, , 25 ;This will hit submits
 
 	Return
 	
 Close_Function: ;THIS FUNCTION WILL CLOSE OUR TAG 
 	Sleep, 500
-	MouseClick, Left, 1850, 975, , 25 ;quick repair
+	MouseClick, Left, 1502, 794, , 25 ;quick repair
 	Sleep, 7000
-	MouseClick, Left, 1856, 253, , 25 ;makes sure we are in the so notes and statuss
+	MouseClick, Left, 1472, 271, , 25 ;makes sure we are in the so notes and statuss
 	Sleep, 2000
-	MouseClick, Left, 290, 314, , 75 ;drop down menu
+	MouseClick, Left, 391, 326, , 75 ;drop down menu
 	Sleep, 500
-	MouseClick, Left, 290, 378, , 75 ;to complete
-	MouseClick, Left, 290, 437, , 75 ;to text box below
+	MouseClick, Left, 251, 383, , 75 ;to complete
+	MouseClick, Left, 157, 412, , 75 ;to text box below
 	Send, GSIS
 	Send, `t	
 	Send, %Tar% ; -------------------------------------------------------!RES CODE!
 	Send, `t
 	Send, `t
 	Send, Device works as expected. %Tar%. -%init% ; ------------------!REPAIR NOTES!
-	MsgBox, , Attention, Did everthing complete correctly? ;lets us check to see if everything typed out correctly
-	MouseClick, Left, 1850, 975, , 75 ;clicks save
+	MsgBox, , Attention, Did everything complete correctly? ;lets us check to see if everything typed out correctly
+	MouseClick, Left, 1520, 796, , 75 ;clicks save
 	Sleep, 6000
-	MouseClick, Left, 1850, 975, , 75 ;Confirms save
+	MouseClick, Left, 1520, 796, , 75 ;Confirms save
 	Sleep, 6000
-	MouseClick, Left, 1737, 129, , 75 ;copies the SO 
+	MouseClick, Left, 1403, 149, , 75 ;copies the SO 
 	Sleep, 100
-	MouseClick, Left, 1737, 132, , 75 ;copies again
+	MouseClick, Left, 1403, 149, , 75 ;copies again
 	Sleep, 100
-	MouseClick, Left, 1735, 131, , 75 ;copies again
-	MouseClick, Left, 144, 69, , 75 ;clicks on the search box
+	MouseClick, Left, 1403, 149, , 75 ;copies again
+	MouseClick, Left, 132, 93, , 75 ;clicks on the search box
 	SendInput ^v ;pastes the copied SO
 	SendInput {Enter}	
 	Sleep, 5000
-	MouseClick, Left, 762, 981, , 75 ;Hits print
-	Sleep, 4000
-	SendInput {Enter} ;confirms print
+	MouseClick, Left, 37, 105, , 75 ;Clicks Home Logo
+	;MouseClick, Left, 762, 981, , 75 ;Hits print
+	;Sleep, 4000
+	;SendInput {Enter} ;confirms print
 	Return
 
 ; =======================================================================================
@@ -374,11 +375,12 @@ GUIMain()
 	Gui, Add, Button, % " x" 10 " y" 150 " w" 200 " h" 30, GSDR
 	Gui, Add, Button, % " x" 10 " y" 320 " w" 200 " h" 30, ReadMe ;ORIGINAL POSITIONING Gui, Add, Button, % " x" 10 " y" 240 " w" 200 " h" 30, ReadMe
 	;Gui, Add, Button, % " x" 10 " y" 280 " w" 200 " h" 30, Test  
-	;Gui, Add, Button, % " x" 10 " y" 320 " w" 200 " h" 30, Get Mouse Pos
+	Gui, Add, Button, % " x" 10 " y" 280 " w" 200 " h" 30, Get Mouse Pos
 	Gui, Add, Button, % " x" 10 " y" 360 " w" 100 " h" 30, Change Initials
-	Gui, Add, Button, % " x" 110 " y" 360 " w" 100 " h" 30, Exit
+	Gui, Add, Button, % " x" 110 " y" 360 " w" 100 " h" 30 , Exit
 
 	Gui, Show, % " w" GUIWidth " h" GUIHeight, TagManager
 	Return
 }
 ; =======================================================================================
+
