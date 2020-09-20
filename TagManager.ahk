@@ -19,7 +19,7 @@ OnExit, ExitSub ; Run a subroutine or function automatically when the script exi
 ; =======================================================================================
 
 ; Script ================================================================================
-	MsgBox, ,Disclaimer, This program is designed to AID in closing tags and is still a work in progress.`r`rThe creator is in no way responsible for the actions of this program.`r`rBy using this program you are accepting that you are responsible for what happens while this program is in use. 
+	;MsgBox, ,Disclaimer, This program is designed to AID in closing tags and is still a work in progress.`r`rThe creator is in no way responsible for the actions of this program.`r`rBy using this program you are accepting that you are responsible for what happens while this program is in use. 
 	
 	Return ; End automatic execution
 
@@ -98,10 +98,120 @@ ButtonGSDR: ;GSDR MENU FOR CLOSING SIMPLE TAGS
 	Gui, 2:Show, % " w" 225 " h" 300, GSDR
 	Return
 
+ButtonClockIn:
+	
+	;starts variables blank
+	user := ""
+	pass := ""
+
+
+	;Creates 3nd gui for clocking in
+	Gui, 3:+AlwaysOnTop -SysMenu
+	Gui, 3:Add, Text, % " x" 10 " y" 10, Enter your credentials here:
+	Gui, 3:Add, Edit, limit8 x10 y40 w205 r1 vuser gSubmit_All, %user%
+	Gui, 3:Add, Edit, limit20 Password x10 y70 w205 r1 vpass gSubmit_All,  %pass%
+	Gui, 3:Add, Button, % " x" 116 " y" 260 " w" 100 " h" 30, &Start
+	Gui, 3:Add, Button, % " x" 10 " y" 260 " w" 100 " h" 30, Back
+	Gui, 3:Show, % " w" 225 " h" 300, Clock In
+	Return
+
+3ButtonReset:
+	user :=""
+	pass :=""
+
+	GuiControl,,user,
+	GuiControl,,pass,
+
+	Return
+
+3ButtonStart:
+	Gui, 3:Hide
+	Send, {LWin down}
+	Send, r
+	Send, {LWin up}
+	Sleep, 100
+	Send, iexplore.exe -private
+	Send, {enter}
+	Sleep, 5000
+	MouseClick, Left, 275, 37, , 75 ;clicks search bar
+	MouseClick, Left, 275, 37, , 75 ;clicks search bar
+	Sleep, 100
+	Send, mytlc.bestbuy.com
+	Send, {Enter}
+	Sleep, 6000
+	MouseClick, Left, 941, 285, , 75 ;clicks on login box
+	Send, %user%
+	Send, `t
+	Send, %pass%
+	Send, {Enter}
+	Sleep, 4000
+	MouseClick, Left, 188, 218, , 75 ;clicks clock in
+	Gui, 3:Destroy
+	Return
+
+3ButtonBack:
+	Gui, 3:Destroy
+	Return
+
+ButtonClockOut:
+	
+	;starts variables blank
+	user := ""
+	pass := ""
+
+
+	;Creates 4nd gui for clocking in
+	Gui, 4:+AlwaysOnTop -SysMenu
+	Gui, 4:Add, Text, % " x" 10 " y" 10, Enter your credentials here:
+	Gui, 4:Add, Edit, limit8 x10 y40 w205 r1 vuser gSubmit_All, %user%
+	Gui, 4:Add, Edit, limit20 Password x10 y70 w205 r1 vpass gSubmit_All,  %pass%
+	Gui, 4:Add, Button, % " x" 116 " y" 260 " w" 100 " h" 30, &Start
+	Gui, 4:Add, Button, % " x" 10 " y" 260 " w" 100 " h" 30, Back
+	Gui, 4:Show, % " w" 225 " h" 300, Clock Out
+	Return
+
+4ButtonReset:
+	user :=""
+	pass :=""
+
+	GuiControl,,user,
+	GuiControl,,pass,
+
+	Return
+
+4ButtonStart:
+	Gui, 3:Hide
+	Send, {LWin down}
+	Send, r
+	Send, {LWin up}
+	Sleep, 100
+	Send, iexplore.exe -private
+	Send, {enter}
+	Sleep, 5000
+	MouseClick, Left, 275, 37, , 75 ;clicks search bar
+	MouseClick, Left, 275, 37, , 75 ;clicks search bar
+	Sleep, 100
+	Send, mytlc.bestbuy.com
+	Send, {Enter}
+	Sleep, 6000
+	MouseClick, Left, 941, 285, , 75 ;clicks on login box
+	Send, %user%
+	Send, `t
+	Send, %pass%
+	Send, {Enter}
+	Sleep, 4000
+	MouseClick, Left, 519, 215, , 75 ;clicks clock out
+	Gui, 3:Destroy
+	Return
+
+4ButtonBack:
+	Gui, 4:Destroy
+	Return
+
 ButtonGetMousePos: ;GETS MOUSE POSITION (disabled on main gui)
 
 	CoordMode, Mouse, Screen ;Sets Mouse to absolute screen coordinates
-	Sleep, 5000
+	Sleep, 3000
 	MouseGetPos, xpos, ypos ;gets mouse coords
 	MsgBox, The cursor is at X%xpos% Y%ypos%. ;outputs mouse coords
 	Return
@@ -114,6 +224,7 @@ ButtonChangeInitials:
 		InputBox, init, Initials, Please enter your initials., , 240, 130 ;gets the agents intials if they leave it blank
 	}
 	
+	global init
 	Return
 
 ButtonReadMe:
@@ -262,12 +373,12 @@ Action_Selector: ;This will call the appropriate subs whether the user wants to 
 		GoSub, Create_Function
 		
 		Sleep, 10000
-		MouseClick, Left, 1208, 142, , 25 ;This will copy the WO
+		MouseClick, Left, 1047, 157, , 25 ;This will copy the WO
 		Sleep, 20
-		MouseClick, Left, 1208, 140, , 25 ;This will copy the WO
+		MouseClick, Left, 1047, 157, , 25 ;This will copy the WO
 		Sleep, 20
-		MouseClick, Left, 1208, 139, , 25 ;This will copy the WO
-		MouseClick, Left, 144, 69, , 75 ;clicks on the search box
+		MouseClick, Left, 1047, 157, , 25 ;This will copy the WO
+		MouseClick, Left, 152, 90, , 75 ;clicks on the search box
 		SendInput ^v ;pastes the copied SO
 		SendInput {Enter}
 		Sleep, 10000
@@ -279,59 +390,60 @@ Action_Selector: ;This will call the appropriate subs whether the user wants to 
 		Return
 	
 Create_Function: ;THIS FUNCTION WILL CREATE A NEW TAG
-	MouseClick, Left, 1850, 992, , 25 ;Select
+	MouseClick, Left, 1522, 814, , 25 ;Select
 	Sleep, 6000
-	MouseClick, Left, 527, 453, , 25 ;this will click in the text box to get us ready to type
+	MouseClick, Left, 359, 381, , 25 ;this will click in the text box to get us ready to type
 	Send, . Device works as expected. -%init% ;this is our text in the text box
 	Sleep, 50
-	MouseClick, Left, 588, 237, , 25 ;this will set the tag instore
-	MouseClick, Left, 1887, 237, , 25 ;This will select the ddl
+	MouseClick, Left, 491, 259, , 25 ;this will set the tag instore
+	MouseClick, Left, 1549, 257, , 25 ;This will select the ddl
 	Sleep, 500
-	MouseClick, Left, 1422, 349, , 25 ;This will select New product
+	MouseClick, Left, 1186, 373, , 25 ;This will select New product
 	Sleep, 500
-	MouseClick, Left, 1885, 617, , 25 ;This will select the ddl
+	MouseClick, Left, 1551, 541, , 25 ;This will select the ddl
 	Sleep, 500
-	MouseClick, Left, 1422, 667, , 25 ;This will select all
+	MouseClick, Left, 1188, 592, , 25 ;This will select all
 	;MsgBox, Please check these fields.
 	Sleep, 200
-	MouseClick, Left, 1864, 993, , 25 ;This will hit submits
-	MouseClick, Left, 1864, 993, , 25 ;This will hit submits
+	MouseClick, Left, 1529, 816, , 25 ;This will hit submits
+	;MouseClick, Left, 1864, 993, , 25 ;This will hit submits
 
 	Return
 	
 Close_Function: ;THIS FUNCTION WILL CLOSE OUR TAG 
 	Sleep, 500
-	MouseClick, Left, 1850, 975, , 25 ;quick repair
+	MouseClick, Left, 1502, 794, , 25 ;quick repair
 	Sleep, 7000
-	MouseClick, Left, 1856, 253, , 25 ;makes sure we are in the so notes and statuss
+	MouseClick, Left, 1472, 271, , 25 ;makes sure we are in the so notes and statuss
 	Sleep, 2000
-	MouseClick, Left, 290, 314, , 75 ;drop down menu
+	MouseClick, Left, 391, 326, , 75 ;drop down menu
 	Sleep, 500
-	MouseClick, Left, 290, 378, , 75 ;to complete
-	MouseClick, Left, 290, 437, , 75 ;to text box below
+	MouseClick, Left, 251, 383, , 75 ;to complete
+	MouseClick, Left, 157, 412, , 75 ;to text box below
 	Send, GSIS
 	Send, `t	
 	Send, %Tar% ; -------------------------------------------------------!RES CODE!
 	Send, `t
 	Send, `t
 	Send, Device works as expected. %Tar%. -%init% ; ------------------!REPAIR NOTES!
-	MsgBox, , Attention, Did everthing complete correctly? ;lets us check to see if everything typed out correctly
-	MouseClick, Left, 1850, 975, , 75 ;clicks save
+	MsgBox, , Attention, Did everything complete correctly? ;lets us check to see if everything typed out correctly
+	MouseClick, Left, 1520, 796, , 75 ;clicks save
 	Sleep, 6000
-	MouseClick, Left, 1850, 975, , 75 ;Confirms save
+	MouseClick, Left, 1520, 796, , 75 ;Confirms save
 	Sleep, 6000
-	MouseClick, Left, 1737, 129, , 75 ;copies the SO 
+	MouseClick, Left, 1403, 149, , 75 ;copies the SO 
 	Sleep, 100
-	MouseClick, Left, 1737, 132, , 75 ;copies again
+	MouseClick, Left, 1403, 149, , 75 ;copies again
 	Sleep, 100
-	MouseClick, Left, 1735, 131, , 75 ;copies again
-	MouseClick, Left, 144, 69, , 75 ;clicks on the search box
+	MouseClick, Left, 1403, 149, , 75 ;copies again
+	MouseClick, Left, 132, 93, , 75 ;clicks on the search box
 	SendInput ^v ;pastes the copied SO
 	SendInput {Enter}	
 	Sleep, 5000
-	MouseClick, Left, 762, 981, , 75 ;Hits print
-	Sleep, 4000
-	SendInput {Enter} ;confirms print
+	MouseClick, Left, 37, 105, , 75 ;Clicks Home Logo
+	;MouseClick, Left, 762, 981, , 75 ;Hits print
+	;Sleep, 4000
+	;SendInput {Enter} ;confirms print
 	Return
 
 ; =======================================================================================
@@ -365,20 +477,183 @@ GUIMain()
 	
 	;THIS IS OUR MAIN GUI AND ACTION SELECTOR
 	CoordMode, Mouse, Screen ;Place Mouse at absolute screen coordinates
-	Gui, Add, Button, % " x" 10 " y" 10 " w" 200 " h" 30, GSOB
-	Gui, Add, Button, % " x" 10 " y" 50 " w" 200 " h" 30, GSCC
+	Gui, Add, Button, % " x" 10 " y" 10 " w" 200 " h" 30, GSO&B
+	Gui, Add, Button, % " x" 10 " y" 50 " w" 200 " h" 30, GSC&C
 	Gui, Add, DropDownList, x100 y90 w109 vItem gSubmit_All,Select Item||Computer|TV|Phone or Tablet
 	Gui, Add, Text, x10 y95, What is certified?
 	Gui, Add, DropDownList, x100 y120 w109 vAction gSubmit_All,Select Action||Create|Close|Both
 	Gui, Add, Text, x10 y125, Select an action?
-	Gui, Add, Button, % " x" 10 " y" 150 " w" 200 " h" 30, GSDR
+	Gui, Add, Button, % " x" 10 " y" 150 " w" 200 " h" 30, GS&DR
+	Gui, Add, Button, % " x" 10 " y" 190 " w" 200 " h" 30 , Clock &In
+	Gui, Add, Button, % " x" 10 " y" 230 " w" 200 " h" 30 , Clock &Out
 	Gui, Add, Button, % " x" 10 " y" 320 " w" 200 " h" 30, ReadMe ;ORIGINAL POSITIONING Gui, Add, Button, % " x" 10 " y" 240 " w" 200 " h" 30, ReadMe
 	;Gui, Add, Button, % " x" 10 " y" 280 " w" 200 " h" 30, Test  
-	;Gui, Add, Button, % " x" 10 " y" 320 " w" 200 " h" 30, Get Mouse Pos
-	Gui, Add, Button, % " x" 10 " y" 360 " w" 100 " h" 30, Change Initials
-	Gui, Add, Button, % " x" 110 " y" 360 " w" 100 " h" 30, Exit
+	Gui, Add, Button, % " x" 10 " y" 280 " w" 200 " h" 30, &Get Mouse Pos
+	Gui, Add, Button, % " x" 10 " y" 360 " w" 100 " h" 30, &Change Initials
+	Gui, Add, Button, % " x" 110 " y" 360 " w" 100 " h" 30 , Exit
 
 	Gui, Show, % " w" GUIWidth " h" GUIHeight, TagManager
 	Return
 }
 ; =======================================================================================
+
+^+h::
+	hardwarediags(){
+	MouseClick, Left, 1144, 347, , 75 ;adds 1 box
+	Send, `t
+	Send, `t
+	Send, %init%
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	}
+
+^+o::
+	os_service_preparation(){
+	MouseClick, Left, 87, 349, , 75 ;adds 1 box
+	Send, `t
+	Send, %init%
+	}
+
+^+v::
+	vir_spy(){
+	MouseClick, Left, 1488, 321, , 75 ;adds 1 box
+	MouseClick, Left, 1488, 321, , 75 ;adds 1 box
+	MouseClick, Left, 1488, 321, , 75 ;adds 1 box
+	Sleep, 500
+	MouseClick, Left, 105, 356, , 75 ;adds 1 box
+	Send, MRI
+	Send, `t
+	Send, 0
+	Send, `t
+	Send, 0
+	Send, `t
+	Send, %init%
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, Tr
+	Send, `t
+	Send, 0
+	Send, `t
+	Send, 0
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, we
+	Send, `t
+	Send, 0
+	Send, `t
+	Send, 0
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, other
+	Send, `t
+	MouseClick, Left, 1108, 442, , 75 ;clicks on found box
+	Send, 11
+	Send, `t
+	Send, 11
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, Group Policies
+
+	}
+
+^+t::
+	tune_up(){
+	MouseClick, Left, 89, 349, , 75 ;adds 1 box
+	Send, `t
+	Send, %init%
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	}
+
+^+p::
+	post_op(){
+	MouseClick, Left, 88, 348, , 75 ;adds 1 box
+	Send, `t
+	Send, %init%
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, `t
+	Send, {Space}
+	}
+
