@@ -398,7 +398,7 @@ Create_Function: ;THIS FUNCTION WILL CREATE A NEW TAG
 	MouseClick, Left, 491, 259, , 25 ;this will set the tag instore
 	MouseClick, Left, 1549, 257, , 25 ;This will select the ddl
 	Sleep, 500
-	MouseClick, Left, 1186, 373, , 25 ;This will select New product
+	MouseClick, Left, 1205, 351, , 25 ;This will select New product
 	Sleep, 500
 	MouseClick, Left, 1551, 541, , 25 ;This will select the ddl
 	Sleep, 500
@@ -519,6 +519,7 @@ GUIMain()
 	Send, `t
 	Send, `t
 	Send, {Space}
+	MouseMove, 1502, 792
 	}
 
 ^+o::
@@ -526,6 +527,7 @@ GUIMain()
 	MouseClick, Left, 87, 349, , 75 ;adds 1 box
 	Send, `t
 	Send, %init%
+	MouseMove, 1502, 792
 	}
 
 ^+v::
@@ -577,7 +579,7 @@ GUIMain()
 	Send, `t
 	Send, `t
 	Send, Group Policies
-
+	MouseMove, 1502, 792
 	}
 
 ^+t::
@@ -599,6 +601,7 @@ GUIMain()
 	Send, `t
 	Send, `t
 	Send, {Space}
+	MouseMove, 1502, 792
 	}
 
 ^+p::
@@ -655,6 +658,7 @@ GUIMain()
 	Send, `t
 	Send, `t
 	Send, {Space}
+	MouseMove, 1502, 792
 	}
 
 ; "CTRL + LEFT"  for previous 
