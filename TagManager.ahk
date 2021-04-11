@@ -1,5 +1,5 @@
 ; =======================================================================================
-; Name ..........: TagManager V.8
+; Name ..........: TagManager V.9
 ; Description ...: This script will automatically close tags. The user will choose which type of tag is being closed and enter the apropriate res code. 
 ; AHK Version ...: AHK_A 1.1.30.1 (Unicode 32-bit) - Dec 26, 2018
 ; Platform ......: Windows 2000+
@@ -18,7 +18,7 @@ SetBatchLines, -1 ; Run script at maximum speed
 OnExit, ExitSub ; Run a subroutine or function automatically when the script exits
 ; =======================================================================================
 
-; Script ================================================================================
+;  =============== DISCLAIMER ===========================================================
 	;MsgBox, ,Disclaimer, This program is designed to AID in closing tags and is still a work in progress.`r`rThe creator is in no way responsible for the actions of this program.`r`rBy using this program you are accepting that you are responsible for what happens while this program is in use. 
 	
 	Return ; End automatic execution
@@ -26,8 +26,55 @@ OnExit, ExitSub ; Run a subroutine or function automatically when the script exi
 ; =======================================================================================
 
 
-; MAIN GUI FUNCTIONS ====================================================================
 
+;  ==================  MAIN GUI  ========================================================
+
+GUIMain()
+{
+	Static GUICreate := GUIMain()
+	
+	Global
+	
+	Item := "Select Item"
+	Action := "Select Action"
+	init := ""
+	
+	GUIWidth := 225, GUIHeight := 400
+	
+	Menu, Tray, Icon, Shell32.dll, 174 ; Change the tray icon
+	Menu, Tray, Tip, GSTagManager ; Change the tooltip of the tray icon
+	Menu, Tray, NoStandard ; Remove all standard tray menu items
+	Menu, Tray, Add, Exit, ExitSub
+
+	Gui, +LastFound -Resize
+	Gui, Margin, 10, 10
+	
+	while(init = ""){
+		InputBox, init, Initials, Please enter your initials., , 240, 130 ;gets the intials of the user
+	}
+	
+	;THIS IS OUR MAIN GUI AND ACTION SELECTOR
+	CoordMode, Mouse, Screen ;Place Mouse at absolute screen coordinates
+	Gui, Add, Button, % " x" 10 " y" 10 " w" 200 " h" 30, GSO&B
+	Gui, Add, Button, % " x" 10 " y" 50 " w" 200 " h" 30, GSC&C
+	Gui, Add, DropDownList, x100 y90 w109 vItem gSubmit_All,Select Item||Computer|TV|Phone or Tablet
+	Gui, Add, Text, x10 y95, What is certified?
+	Gui, Add, DropDownList, x100 y120 w109 vAction gSubmit_All,Select Action||Create|Close|Both
+	Gui, Add, Text, x10 y125, Select an action?
+	Gui, Add, Button, % " x" 10 " y" 150 " w" 200 " h" 30, GS&DR
+	Gui, Add, Button, % " x" 10 " y" 320 " w" 200 " h" 30, ReadMe ;ORIGINAL POSITIONING Gui, Add, Button, % " x" 10 " y" 240 " w" 200 " h" 30, ReadMe
+	;Gui, Add, Button, % " x" 10 " y" 280 " w" 200 " h" 30, Test  
+	Gui, Add, Button, % " x" 10 " y" 280 " w" 200 " h" 30, &Get Mouse Pos
+	Gui, Add, Button, % " x" 10 " y" 360 " w" 100 " h" 30, &Change Initials
+	Gui, Add, Button, % " x" 110 " y" 360 " w" 100 " h" 30 , Exit
+
+	Gui, Show, % " w" GUIWidth " h" GUIHeight, TagManager
+	Return
+}
+; =======================================================================================
+
+
+;  =============== MAIN GUI FUNCTIONS ===================================================
 ButtonGSOB: ;OPEN BOX ACTIONS
 
 	if(init = ""){
@@ -76,137 +123,7 @@ ButtonGSCC: ;CERTIFIED OPEN BOX ACTIONS
 	else
 		return
 
-ButtonGSDR: ;GSDR MENU FOR CLOSING SIMPLE TAGS
 
-	;starts our fields out blank
-	R1 := ""
-	R2 := ""
-	R3 := ""
-	R4 := ""
-	  
-	;Creates 2nd gui for res code fields
-	Gui, 2:+AlwaysOnTop -SysMenu
-	Gui, 2:Add, Text, % " x" 10 " y" 10, Please choose your res codes:
-	Gui, 2:Add, Edit, limit4 Uppercase x10 y40 w205 r1 vR1 gSubmit_All, %R1%
-	Gui, 2:Add, Edit, limit4 Uppercase x10 y70 w205 r1 vR2 gSubmit_All,  %R2%
-	Gui, 2:Add, Edit, limit4 Uppercase x10 y100 w205 r1 vR3 gSubmit_All,  %R3%
-	Gui, 2:Add, Edit, limit4 Uppercase x10 y130 w205 r1 vR4 gSubmit_All, %R4%
-	Gui, 2:Add, Button, % x10 y230 w200 h30 gReset, Reset
-	Gui, 2:Add, Checkbox, Checked1 x100 y162 vNotes gSubmit_All, Print agent notes?
-	Gui, 2:Add, Button, % " x" 116 " y" 260 " w" 100 " h" 30, Start
-	Gui, 2:Add, Button, % " x" 10 " y" 260 " w" 100 " h" 30, Back
-	Gui, 2:Show, % " w" 225 " h" 300, GSDR
-	Return
-
-ButtonClockIn:
-	
-	;starts variables blank
-	user := ""
-	pass := ""
-
-
-	;Creates 3nd gui for clocking in
-	Gui, 3:+AlwaysOnTop -SysMenu
-	Gui, 3:Add, Text, % " x" 10 " y" 10, Enter your credentials here:
-	Gui, 3:Add, Edit, limit8 x10 y40 w205 r1 vuser gSubmit_All, %user%
-	Gui, 3:Add, Edit, limit20 Password x10 y70 w205 r1 vpass gSubmit_All,  %pass%
-	Gui, 3:Add, Button, % " x" 116 " y" 260 " w" 100 " h" 30, &Start
-	Gui, 3:Add, Button, % " x" 10 " y" 260 " w" 100 " h" 30, Back
-	Gui, 3:Show, % " w" 225 " h" 300, Clock In
-	Return
-
-3ButtonReset:
-	user :=""
-	pass :=""
-
-	GuiControl,,user,
-	GuiControl,,pass,
-
-	Return
-
-3ButtonStart:
-	Gui, 3:Hide
-	Send, {LWin down}
-	Send, r
-	Send, {LWin up}
-	Sleep, 100
-	Send, iexplore.exe -private
-	Send, {enter}
-	Sleep, 5000
-	MouseClick, Left, 275, 37, , 75 ;clicks search bar
-	MouseClick, Left, 275, 37, , 75 ;clicks search bar
-	Sleep, 100
-	Send, mytlc.bestbuy.com
-	Send, {Enter}
-	Sleep, 6000
-	MouseClick, Left, 941, 285, , 75 ;clicks on login box
-	Send, %user%
-	Send, `t
-	Send, %pass%
-	Send, {Enter}
-	Sleep, 4000
-	MouseClick, Left, 188, 218, , 75 ;clicks clock in
-	Gui, 3:Destroy
-	Return
-
-3ButtonBack:
-	Gui, 3:Destroy
-	Return
-
-ButtonClockOut:
-	
-	;starts variables blank
-	user := ""
-	pass := ""
-
-
-	;Creates 4nd gui for clocking in
-	Gui, 4:+AlwaysOnTop -SysMenu
-	Gui, 4:Add, Text, % " x" 10 " y" 10, Enter your credentials here:
-	Gui, 4:Add, Edit, limit8 x10 y40 w205 r1 vuser gSubmit_All, %user%
-	Gui, 4:Add, Edit, limit20 Password x10 y70 w205 r1 vpass gSubmit_All,  %pass%
-	Gui, 4:Add, Button, % " x" 116 " y" 260 " w" 100 " h" 30, &Start
-	Gui, 4:Add, Button, % " x" 10 " y" 260 " w" 100 " h" 30, Back
-	Gui, 4:Show, % " w" 225 " h" 300, Clock Out
-	Return
-
-4ButtonReset:
-	user :=""
-	pass :=""
-
-	GuiControl,,user,
-	GuiControl,,pass,
-
-	Return
-
-4ButtonStart:
-	Gui, 3:Hide
-	Send, {LWin down}
-	Send, r
-	Send, {LWin up}
-	Sleep, 100
-	Send, iexplore.exe -private
-	Send, {enter}
-	Sleep, 5000
-	MouseClick, Left, 275, 37, , 75 ;clicks search bar
-	MouseClick, Left, 275, 37, , 75 ;clicks search bar
-	Sleep, 100
-	Send, mytlc.bestbuy.com
-	Send, {Enter}
-	Sleep, 6000
-	MouseClick, Left, 941, 285, , 75 ;clicks on login box
-	Send, %user%
-	Send, `t
-	Send, %pass%
-	Send, {Enter}
-	Sleep, 4000
-	MouseClick, Left, 519, 215, , 75 ;clicks clock out
-	Gui, 3:Destroy
-	Return
-
-4ButtonBack:
-	Gui, 4:Destroy
-	Return
 
 ButtonGetMousePos: ;GETS MOUSE POSITION (disabled on main gui)
 
@@ -245,15 +162,60 @@ Escape::ExitApp ;this is our emergey stop if something goes wrong
 ExitSub:
 	ExitApp ; Terminate the script unconditionally
 	Return
+
 ; ========================================================================================
 
+; ============== GUI 2 BUTTONS ===========================================================
 
-; GUI 2 BUTTONS ==========================================================================
+
+ButtonGSDR: ;GSDR MENU FOR CLOSING SIMPLE TAGS
+
+	;starts our fields out blank
+	R1 := ""
+	R2 := ""
+	R3 := ""
+	R4 := ""
+	  
+	;Creates 2nd gui for res code fields
+	Gui, 2:+AlwaysOnTop -SysMenu
+	Gui, 2:Add, Text, % " x" 10 " y" 10, Please choose your res codes:
+	Gui, 2:Add, Edit, limit4 Uppercase x10 y40 w205 r1 vR1 gSubmit_All, %R1%
+	Gui, 2:Add, Edit, limit4 Uppercase x10 y70 w205 r1 vR2 gSubmit_All,  %R2%
+	Gui, 2:Add, Edit, limit4 Uppercase x10 y100 w205 r1 vR3 gSubmit_All,  %R3%
+	Gui, 2:Add, Edit, limit4 Uppercase x10 y130 w205 r1 vR4 gSubmit_All, %R4%
+	Gui, 2:Add, Button, % x10 y230 w200 h30 gReset, Reset
+	Gui, 2:Add, Checkbox, Checked1 x100 y162 vNotes gSubmit_All, Print agent notes?
+	Gui, 2:Add, Button, % " x" 116 " y" 260 " w" 100 " h" 30, Start
+	Gui, 2:Add, Button, % " x" 10 " y" 260 " w" 100 " h" 30, Back
+	Gui, 2:Show, % " w" 225 " h" 300, GSDR
+	Return
 
 2ButtonStart: ;STARTS OUR GSDR SECTION WITH SMART NOTES
 	Gui, 2:Show, Hide
 	CoordMode, Mouse, Screen ;Place Mouse at absolute screen coordinates
-	MouseClick, Left, 1850, 975, , 25 ;quick repair
+	MouseClick, Left, 65, 349, , 25 ;clicks backup tab
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, {Space}
+	Send, `t
+	Send, {Space}
+	MouseClick, Left, 1493, 792, , 25 ;clicks create flow.
+
+
+	;START FROM HERE
+
+
 	Sleep, 7000
 	MouseClick, Left, 1856, 253, , 25 ;makes sure we are in the so notes and status
 	Sleep, 2000
@@ -309,7 +271,7 @@ ExitSub:
 		}
 		
 	Send, -%init%
-	MsgBox, , Attention, Did everything type out correctly? ;This lets us check if things were typed out correctly
+	;MsgBox, , Attention, Did everything type out correctly? ;This lets us check if things were typed out correctly
 		
 	MouseClick, Left, 1850, 975, , 75 ;clicks save
 	Sleep, 6000
@@ -387,7 +349,7 @@ Action_Selector: ;This will call the appropriate subs whether the user wants to 
 		Return
 		}
 	else
-		Return
+	Return
 	
 Create_Function: ;THIS FUNCTION WILL CREATE A NEW TAG
 	MouseClick, Left, 1522, 814, , 25 ;Select
@@ -449,53 +411,7 @@ Close_Function: ;THIS FUNCTION WILL CLOSE OUR TAG
 ; =======================================================================================
 
 
-; Main Function =========================================================================
-
-GUIMain()
-{
-	Static GUICreate := GUIMain()
-	
-	Global
-	
-	Item := "Select Item"
-	Action := "Select Action"
-	init := ""
-	
-	GUIWidth := 225, GUIHeight := 400
-	
-	Menu, Tray, Icon, Shell32.dll, 174 ; Change the tray icon
-	Menu, Tray, Tip, GSTagManager ; Change the tooltip of the tray icon
-	Menu, Tray, NoStandard ; Remove all standard tray menu items
-	Menu, Tray, Add, Exit, ExitSub
-
-	Gui, +LastFound -Resize
-	Gui, Margin, 10, 10
-	
-	while(init = ""){
-		InputBox, init, Initials, Please enter your initials., , 240, 130 ;gets the intials of the user
-	}
-	
-	;THIS IS OUR MAIN GUI AND ACTION SELECTOR
-	CoordMode, Mouse, Screen ;Place Mouse at absolute screen coordinates
-	Gui, Add, Button, % " x" 10 " y" 10 " w" 200 " h" 30, GSO&B
-	Gui, Add, Button, % " x" 10 " y" 50 " w" 200 " h" 30, GSC&C
-	Gui, Add, DropDownList, x100 y90 w109 vItem gSubmit_All,Select Item||Computer|TV|Phone or Tablet
-	Gui, Add, Text, x10 y95, What is certified?
-	Gui, Add, DropDownList, x100 y120 w109 vAction gSubmit_All,Select Action||Create|Close|Both
-	Gui, Add, Text, x10 y125, Select an action?
-	Gui, Add, Button, % " x" 10 " y" 150 " w" 200 " h" 30, GS&DR
-	Gui, Add, Button, % " x" 10 " y" 190 " w" 200 " h" 30 , Clock &In
-	Gui, Add, Button, % " x" 10 " y" 230 " w" 200 " h" 30 , Clock &Out
-	Gui, Add, Button, % " x" 10 " y" 320 " w" 200 " h" 30, ReadMe ;ORIGINAL POSITIONING Gui, Add, Button, % " x" 10 " y" 240 " w" 200 " h" 30, ReadMe
-	;Gui, Add, Button, % " x" 10 " y" 280 " w" 200 " h" 30, Test  
-	Gui, Add, Button, % " x" 10 " y" 280 " w" 200 " h" 30, &Get Mouse Pos
-	Gui, Add, Button, % " x" 10 " y" 360 " w" 100 " h" 30, &Change Initials
-	Gui, Add, Button, % " x" 110 " y" 360 " w" 100 " h" 30 , Exit
-
-	Gui, Show, % " w" GUIWidth " h" GUIHeight, TagManager
-	Return
-}
-; =======================================================================================
+; ================= HOTKEYS =============================================================
 
 ^+h::
 	hardwarediags(){
@@ -520,6 +436,7 @@ GUIMain()
 	Send, `t
 	Send, {Space}
 	MouseMove, 1502, 792
+	Return
 	}
 
 ^+o::
@@ -528,6 +445,7 @@ GUIMain()
 	Send, `t
 	Send, %init%
 	MouseMove, 1502, 792
+	Return
 	}
 
 ^+v::
@@ -580,6 +498,7 @@ GUIMain()
 	Send, `t
 	Send, Group Policies
 	MouseMove, 1502, 792
+	Return
 	}
 
 ^+t::
@@ -602,7 +521,11 @@ GUIMain()
 	Send, `t
 	Send, {Space}
 	MouseMove, 1502, 792
+	Return
 	}
+
+
+
 
 ^+p::
 	post_op(){
@@ -659,15 +582,33 @@ GUIMain()
 	Send, `t
 	Send, {Space}
 	MouseMove, 1502, 792
+	Return
 	}
 
-; "CTRL + LEFT"  for previous 
-^Left::Media_Prev
+^+r::
+	repair_notes(){
+	MouseClick, Left, 326, 327, , 75 ;clicks ddl
+	Sleep, 100
+	MouseClick, Left, 277, 381, , 75 ;clicks complete
+	Sleep, 100
+	Send, `t
+	Send, {Space}
+	Send, `t
+	SendInput, GSIS
+	Send, `t
+	SendInput, GSDI
+	Send, `t
+	SendInput, GSOS
+	Send, `t
+	SendInput, GSSW
+	Send, `t
+	SendInput, GSHW
+	Send, `t
+	SendInput, Diagnostics passed. OS has been repaired, optimized and updated. Browsers have been checked. Unit now runs as expected. Mission Complete. -
+	Send, %init%
+	clipboard := ""
+	MouseMove, 1502, 792
+	Return
+	}
 
-
-; "CTRL + RIGHT"  for next 
-^Right::Media_Next
-
-
-; "CTRL + SPACE"  for pause
-^Space::Media_Play_Pause
+; ========================================================================================
